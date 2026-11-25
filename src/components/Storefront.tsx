@@ -10,8 +10,16 @@ type Order={id:string;productName:string;grams:number;totalPaise:number;pickupAt
 export async function api(path:string,body?:unknown){const r=await fetch(`/api/${path}`,body===undefined?{cache:'no-store'}:{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const v=await r.json();if(!r.ok)throw Object.assign(new Error(v.error||'Please try again.'),{code:v.code});return v;}
 export default function Storefront(){
   const [data,setData]=useState<Catalog>();const [loadError,setLoadError]=useState('');const [selected,setSelected]=useState('kaju-katli');const [grams,setGrams]=useState(500);const [slot,setSlot]=useState('');const [language,setLanguage]=useState('en-IN');const [text,setText]=useState('');const [name,setName]=useState('');const [quote,setQuote]=useState<Quote>();const [order,setOrder]=useState<Order>();const [error,setError]=useState('');const [note,setNote]=useState('');const [busy,setBusy]=useState('');const [recording,setRecording]=useState(false);const [seconds,setSeconds]=useState(0);const [audio,setAudio]=useState('');const [readbackBusy,setReadbackBusy]=useState(false);const [readbackError,setReadbackError]=useState('');
+  const slotInitialized=useRef(false);
   const recorder=useRef<MediaRecorder|null>(null);const stream=useRef<MediaStream|null>(null);const recordingTimer=useRef<ReturnType<typeof setTimeout>|null>(null);const revision=useRef(0);const key=useRef('');const readbackOrder=useRef('');
-  const refresh=()=>api('catalog').then((d:Catalog)=>{setData(d);setLoadError('');setSlot(s=>s||d.slots.find(s=>s.pickupAt.includes('T18:00'))?.id||d.slots[0]?.id||'');}).catch(e=>setLoadError(e.message));
+  const refresh=()=>api('catalog').then((d:Catalog)=>{
+    setData(d);
+    setLoadError('');
+    if(!slotInitialized.current){
+      setSlot(d.slots.find(s=>s.pickupAt.includes('T18:00'))?.id||d.slots[0]?.id||'');
+      slotInitialized.current=true;
+    }
+  }).catch(e=>setLoadError(e.message));
   useEffect(()=>{refresh();const t=setInterval(refresh,12000);return ()=>{clearInterval(t);stream.current?.getTracks().forEach(t=>t.stop());if(recordingTimer.current)clearTimeout(recordingTimer.current);};},[]);
   useEffect(()=>{if(!recording)return;const t=setInterval(()=>setSeconds(s=>s+1),1000);return ()=>clearInterval(t);},[recording]);
   const edit=()=>{revision.current++;setQuote(undefined);setOrder(undefined);setError('');setAudio('');readbackOrder.current='';setReadbackBusy(false);setReadbackError('');};

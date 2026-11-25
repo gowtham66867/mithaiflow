@@ -8,6 +8,8 @@ Built for Festive Hacks, Bengaluru, 25 November 2026. All shops, products, stock
 
 **Temporary GCP demo:** [Open MithaiFlow](https://mithaiflow.35.208.30.98.sslip.io). This disposable deployment automatically expires around **11:59 PM IST, 25 November 2026**, including its sample orders. [Deployment and verification details](docs/gcp-demo.md).
 
+[Watch the full judging journey](https://github.com/gowtham66867/mithaiflow/releases/download/festive-hacks-demo/MithaiFlow-Judging-Journey.mp4) · [Fresh verification evidence](docs/evidence/judging-journey.json). This follow-up was recorded after submission and includes real microphone transcription, two independent browser cohorts, approved recovery and collection. The edited walkthrough uses Google Gemini narration and the actual Sarvam spoken receipt.
+
 ![MithaiFlow storefront](docs/screenshots/storefront.png)
 
 ## Run locally

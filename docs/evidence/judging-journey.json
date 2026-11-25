@@ -1,0 +1,120 @@
+{
+  "at": "2026-11-25T12:14:10.407020+00:00",
+  "scope": "Fresh post-submission judging verification with fictional shop data",
+  "flagsmith": {
+    "project": 56017,
+    "environment": "Development",
+    "segment": "mithaiflow_regular_customers",
+    "rule": {
+      "customer_type": "regular"
+    },
+    "temporaryTest": {
+      "defaultVoice": false,
+      "regularVoice": true,
+      "returningBrowser": "Gowtham Chrome, voice enabled",
+      "newBrowser": "Texmed Chrome, voice disabled",
+      "newBrowserAfterFirstConfirmation": "Voice enabled after confirmed order and policy refresh"
+    },
+    "restoredDefaultVoice": true,
+    "source": "LIVE"
+  },
+  "nudgebee": {
+    "incidentId": "ecc5c7eb-b5ed-4340-b384-92da14bb09d4",
+    "workflowVersion": 4,
+    "tasks": {
+      "read_health": "success",
+      "human_approval": "success",
+      "recover_checkout": "success",
+      "verify_health": "success"
+    },
+    "approval": "Gowtham explicitly approved this incident in chat; assistant submitted with attribution comment",
+    "executionReference": "Not exposed in the observed UI; no ID invented"
+  },
+  "customerJourney": {
+    "order": {
+      "id": "96a0f8df-a947-41e8-96e2-c9339edb4ee2",
+      "productName": "Motichoor Laddu",
+      "grams": 100,
+      "totalPaise": 6800,
+      "pickupAt": "2026-11-26T18:00:00+05:30",
+      "status": "COLLECTED",
+      "language": "en-IN"
+    },
+    "notices": [
+      {
+        "kind": "CONFIRMED",
+        "at": "2026-11-25T12:03:19.683Z"
+      },
+      {
+        "kind": "READY",
+        "at": "2026-11-25T12:04:36.336Z"
+      }
+    ],
+    "confirmationDuringIncident": "Refused with no reservation",
+    "afterRecovery": "Same review retried and confirmed",
+    "readback": "Actual Sarvam spoken receipt saved for the video",
+    "ready": "Customer pickup pass observed READY",
+    "collected": "Customer pickup pass observed COLLECTED"
+  },
+  "finalHealth": {
+    "status": "healthy",
+    "checkout": true,
+    "workerPaused": false,
+    "pendingNotices": 0,
+    "incidentId": null,
+    "controlledExercise": false,
+    "at": "2026-11-25T12:27:43.660Z"
+  },
+  "humanMicrophone": {
+    "status": "PASS",
+    "source": "Gowtham recorded through the live browser microphone; transcript observed in the connected tab and supplied screenshot",
+    "transcript": "1 kilo of motichoor laddu required at 6 p.m. tonight. 1 kilo of motichoor laddu required at 6 p.m. tonight. Also make sure that it reaches before 6 p.m. because otherwise I will not be at home.",
+    "interpretation": {
+      "productId": "motichoor-laddu",
+      "grams": 1000
+    },
+    "availabilityHandling": "The app displayed That pickup time is unavailable. Please choose an available slot.",
+    "limits": "One English human recording. Hindi human speech and noisy venue accuracy are not established."
+  },
+  "video": {
+    "type": "Edited walkthrough assembled from real browser captures, with Google Gemini narration and actual Sarvam receipt audio",
+    "recordedAfterSubmission": true,
+    "url": "https://github.com/gowtham66867/mithaiflow/releases/download/festive-hacks-demo/MithaiFlow-Judging-Journey.mp4",
+    "durationSeconds": 117.82,
+    "timeCompression": 1.1,
+    "sha256": "dcc489db218a4d0e554ffd6f2924ce40298e9bce89a8d1e7ef7ea342161815f5"
+  },
+  "pickupRefreshRegression": {
+    "status": "PASS",
+    "fix": "Initial pickup default is assigned once. Background catalogue refresh preserves a cleared selection.",
+    "browserResult": {
+      "before": {
+        "reviewDisabled": true,
+        "selects": [
+          {
+            "selected": "Motichoor Laddu",
+            "value": "motichoor-laddu"
+          },
+          {
+            "selected": "Choose a time",
+            "value": ""
+          }
+        ]
+      },
+      "after": {
+        "reviewDisabled": true,
+        "selects": [
+          {
+            "selected": "Motichoor Laddu",
+            "value": "motichoor-laddu"
+          },
+          {
+            "selected": "Choose a time",
+            "value": ""
+          }
+        ]
+      },
+      "waitedAtLeastSeconds": 14
+    }
+  }
+}

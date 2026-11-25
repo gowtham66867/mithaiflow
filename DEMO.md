@@ -1,5 +1,11 @@
 # MithaiFlow — two-minute demo
 
+## Latest verified walkthrough
+
+[Play the 118-second judging journey](https://github.com/gowtham66867/mithaiflow/releases/download/festive-hacks-demo/MithaiFlow-Judging-Journey.mp4). It is an edited sequence of real browser captures, played at 1.1× speed, with Google Gemini narration and actual Sarvam receipt audio. Recorded after the original submission.
+
+The fresh verification includes a real English microphone transcript, safe handling of an unavailable pickup, returning and new customer browsers with different voice access, automatic regular-customer membership after confirmation, an explicitly approved NudgeBee v4 recovery, and ready-to-collected tracking. Global voice access was restored for visitors after the temporary cohort test. [Verification details](docs/evidence/judging-journey.json).
+
 ## Before recording
 
 - Use `npm run build` and `npm start` for a clean preview without development tools.
