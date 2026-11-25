@@ -1,0 +1,91 @@
+{
+  "name": "MithaiFlow approved checkout recovery",
+  "definition": {
+    "version": "v1",
+    "timeout": "10m",
+    "inputs": [],
+    "output": {
+      "health": "{{ Tasks['verify_health'].output.body.status }}"
+    },
+    "tasks": [
+      {
+        "id": "read_health",
+        "type": "integrations.http",
+        "params": {
+          "method": "GET",
+          "timeout": "20s",
+          "url": "https://mithaiflow.35.208.30.98.sslip.io/api/health"
+        }
+      },
+      {
+        "id": "human_approval",
+        "type": "core.approval",
+        "params": {
+          "approval_options": [
+            "approve",
+            "reject"
+          ],
+          "approval_type": "in_app",
+          "message": "Restore MithaiFlow demo checkout for incident {{ Inputs.webhook_json.incidentId }}? Existing orders remain unchanged."
+        },
+        "timeout": "8m",
+        "depends_on": [
+          "read_health"
+        ],
+        "if": "{{ Tasks['read_health'].output.body.status == 'degraded' and Tasks['read_health'].output.body.controlledExercise == true and Tasks['read_health'].output.body.incidentId == Inputs.webhook_json.incidentId }}"
+      },
+      {
+        "id": "recover_checkout",
+        "type": "integrations.http",
+        "params": {
+          "auth_type": "bearer",
+          "bearer_token": "{{ Secrets.mithaiflow_recovery_token }}",
+          "body": "{\"incidentId\":\"{{ Inputs.webhook_json.incidentId }}\"}",
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "method": "POST",
+          "timeout": "20s",
+          "url": "https://mithaiflow.35.208.30.98.sslip.io/api/recover"
+        },
+        "depends_on": [
+          "human_approval"
+        ],
+        "if": "{{ Tasks['human_approval'].output.status == 'approve' }}"
+      },
+      {
+        "id": "verify_health",
+        "type": "integrations.http",
+        "params": {
+          "method": "GET",
+          "timeout": "20s",
+          "url": "https://mithaiflow.35.208.30.98.sslip.io/api/health"
+        },
+        "depends_on": [
+          "recover_checkout"
+        ],
+        "if": "{{ Tasks['human_approval'].output.status == 'approve' }}"
+      }
+    ],
+    "triggers": [
+      {
+        "type": "webhook",
+        "params": {
+          "integration_name": "mithaiflow-demo-incidents"
+        },
+        "layout": {
+          "x": 400,
+          "y": 100
+        }
+      }
+    ],
+    "retry_policy": {
+      "maximum_attempts": 1,
+      "initial_interval": "1s",
+      "maximum_interval": "5s",
+      "backoff_coefficient": 2
+    }
+  },
+  "tags": {},
+  "status": "PAUSED"
+}

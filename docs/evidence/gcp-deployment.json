@@ -1,0 +1,38 @@
+{
+  "at": "2026-11-25T10:17:56.680890+00:00",
+  "url": "https://mithaiflow.35.208.30.98.sslip.io",
+  "expiresAt": "2026-11-25T12:49:59Z",
+  "checks": {
+    "httpsHealth": "PASS",
+    "flagsmithLivePolicy": "PASS",
+    "orderServerPriceAndIdempotency": "PASS",
+    "singleStockReservation": "PASS",
+    "receiptSurvivesAppRestart": "PASS",
+    "unauthenticatedRecovery401": "PASS",
+    "sarvamCloudInterpretation": "PASS",
+    "nudgebeeAgentConnected": "PASS",
+    "nudgebeeWebhookApprovalRecoveryAndHealthyRecheck": "PASS"
+  },
+  "nudgebee": {
+    "version": 4,
+    "incidentId": "2b10a6d5-7828-48bb-a6cd-0852f4301411",
+    "result": "completed; all four tasks succeeded",
+    "approval": "Gowtham explicitly approved in chat; assistant submitted that choice in NudgeBee with an attribution comment",
+    "earlierVersion3": "Canceled because nested approval controls were unavailable; version 4 uses a top-level approval with guarded dependencies",
+    "workflowReferenceInApp": "Execution reference not supplied; no ID invented"
+  },
+  "health": {
+    "status": "healthy",
+    "checkout": true,
+    "workerPaused": false,
+    "pendingNotices": 0,
+    "incidentId": null,
+    "controlledExercise": false,
+    "at": "2026-11-25T10:17:50.519Z"
+  },
+  "limits": [
+    "Temporary single-VM deployment; auto-delete includes sample orders",
+    "No claim of human speech accuracy testing",
+    "No GCP organization IAM policy was weakened"
+  ]
+}

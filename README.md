@@ -6,6 +6,8 @@ During a festive rush, a sweet shop can promise the same stock to a caller and a
 
 Built for Festive Hacks, Bengaluru, 25 November 2026. All shops, products, stock and orders in this demo are fictional sample data. No payments or external customer messages are sent.
 
+**Temporary GCP demo:** [Open MithaiFlow](https://mithaiflow.35.208.30.98.sslip.io). This disposable deployment automatically expires around **6:20 PM IST, 25 November 2026**, including its sample orders. [Deployment and verification details](docs/gcp-demo.md).
+
 ![MithaiFlow storefront](docs/screenshots/storefront.png)
 
 ## Run locally

@@ -8,9 +8,13 @@ This is a controlled application-level checkout failure. It does not crash Kuber
 
 An isolated project, `mithaiflow-demo-20261125`, was created using the Texmed login. Billing is disabled and no compute, database, billing export, or paid resources were provisioned. The service account `mithaiflow-nudgebee` has only `roles/viewer` on this empty project; it has no grants on the existing Texmed projects.
 
-Connection is **not complete**. GCP enforces `iam.managed.disableServiceAccountKeyCreation`; the approved attempt to override it only on this demo project was denied because the login lacks `orgpolicy.policies.create`. No service-account private key was issued or sent to NudgeBee. An authorised Texmed policy administrator must apply a project-only exception before the JSON-key onboarding can continue. Do not disable the protection across the organisation. The NudgeBee form is prepared as **MithaiFlow Demo Texmed**, **Non-production**.
+The direct GCP cloud-inventory route is blocked and unused. GCP enforces `iam.managed.disableServiceAccountKeyCreation`; the approved project-only override was denied because the login lacks `orgpolicy.policies.create`. No service-account private key was issued or sent to NudgeBee. The working alternative below leaves that protection intact.
 
-Project creation and account onboarding do not deploy MithaiFlow. A verified public HTTPS endpoint and the approval workflow below are still required for a live recovery demonstration.
+Project creation and account onboarding alone do not deploy MithaiFlow or prove recovery.
+
+**Verified deployment:** see [GCP demo deployment](gcp-demo.md) for its URL and expiry. The authorised self-hosted account **MithaiFlow Application Demo** and **MithaiFlow demo proxy** are connected. Forager runs only on the disposable VM, with network discovery disabled. Live workflow **v4, Direct approval gate** completed the webhook, degraded-health check, explicit approval, authenticated recovery and healthy recheck. Gowtham approved in chat; the assistant submitted that decision in NudgeBee with an attribution comment. Organization IAM was not changed.
+
+The [secret-free import template](nudgebee-workflow.json) matches the verified flow, with status Paused for safe reuse. Create the named webhook integration and account-scoped secret first; update all fixed endpoint URLs before activating it. NudgeBee inserts its own webhook secret after binding; never export that secret to Git.
 
 1. A working NudgeBee workspace with an account connected. Its setup screen requires a cluster/cloud/self-hosted account before integrations unlock. Use a non-production demo account. Do not connect a production cloud account for this exercise.
 2. A running MithaiFlow instance: `npm run dev`.
@@ -40,7 +44,7 @@ The app sends JSON like:
 }
 ```
 
-Inspect one trigger execution and bind its **actual parsed incidentId** output using NudgeBee's variable picker. Some versions expose a JSON webhook payload as a string; add a Data Transform step to parse it if required. Do not guess that `Inputs.webhook_json` exists. Treat a payload with `probe: true` as a connection probe and stop without approval or recovery.
+The verified installation exposes parsed input as `Inputs.webhook_json.incidentId`; this was confirmed in the execution's actual inputs. Other installations should inspect their input shape first. A connection probe may perform the read-only health check, but must never reach approval or recovery without a matching controlled incident ID.
 
 ### 2. GET health
 
@@ -76,7 +80,9 @@ Add **Core → Approval** (`core.approval`):
 - Options: **approve**, **reject**.
 - Task timeout: long enough for review (for example, 8 minutes).
 
-Add a **Switch** after the approval. Branch on the approval task's `output.status`. Route only the exact **approve** result to recovery. A rejection, timeout, or any other result must stop without calling recovery. Waiting for an approval task is not sufficient: explicitly check its returned choice.
+Keep Approval as a top-level task with `depends_on: ["read_health"]`. Set its Condition (`if` in JSON) to require degraded health, `controlledExercise == true`, and a health incident ID matching `Inputs.webhook_json.incidentId`. This version's UI did not expose response controls for an approval nested inside a Switch branch; that rehearsal was canceled. The verified flow uses top-level conditional tasks.
+
+Set recovery's dependency to `human_approval` and its Condition to `{{ Tasks['human_approval'].output.status == 'approve' }}`. A rejection, timeout or any other result must not call recovery. Waiting for approval alone is insufficient: explicitly check the returned choice. This installation stores ordering as `depends_on`; task-level `next` fields are not retained by its editor.
 
 ### 4. POST recovery
 
