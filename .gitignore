@@ -1,0 +1,15 @@
+node_modules/
+.next/
+.env
+.env.local
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+playwright-report/
+test-results/
+*.tsbuildinfo
+.DS_Store
+
+# Private dashboard captures must stay outside version control.
+/*.png

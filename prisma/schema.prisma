@@ -1,0 +1,94 @@
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider = "sqlite"
+  url = env("DATABASE_URL")
+}
+model Product {
+  id String @id
+  shopId String @default("annapurna")
+  name String
+  hindi String
+  description String
+  pricePerKg Int
+  stockGrams Int
+  reservedGrams Int @default(0)
+  initialGrams Int
+  color String
+}
+model Slot {
+  id String @id
+  shopId String @default("annapurna")
+  pickupAt String
+  capacity Int @default(8)
+  used Int @default(0)
+}
+model Quote {
+  id String @id
+  shopId String @default("annapurna")
+  sessionId String
+  productId String
+  grams Int
+  slotId String
+  totalPaise Int
+  policy String
+  language String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+model Order {
+  id String @id
+  shopId String @default("annapurna")
+  quoteId String @unique
+  sessionId String
+  customerName String
+  productId String
+  productName String
+  grams Int
+  slotId String
+  pickupAt String
+  totalPaise Int
+  policy String
+  language String
+  status String @default("CONFIRMED")
+  createdAt DateTime @default(now())
+}
+model Operation {
+  id String @id
+  fingerprint String
+  result String
+  createdAt DateTime @default(now())
+}
+model Movement {
+  id String @id
+  shopId String @default("annapurna")
+  productId String
+  kind String
+  grams Int
+  orderId String?
+  reason String
+  createdAt DateTime @default(now())
+}
+model Incident {
+  id String @id
+  kind String
+  status String @default("OPEN")
+  notification String @default("NOT_CONFIGURED")
+  workflowRef String?
+  openedAt DateTime @default(now())
+  resolvedAt DateTime?
+}
+model Setting {
+  key String @id
+  value String
+}
+model Outbox {
+  id String @id
+  orderId String
+  kind String
+  delivered Boolean @default(false)
+  createdAt DateTime @default(now())
+  deliveredAt DateTime?
+  @@unique([orderId,kind])
+}
