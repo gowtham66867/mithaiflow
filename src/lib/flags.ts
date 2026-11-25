@@ -11,7 +11,7 @@ export async function policy(identity='guest'):Promise<Policy>{
     try{
       const {Flagsmith}=await import('flagsmith-nodejs');
       sdk ||= new Flagsmith({environmentKey:process.env.FLAGSMITH_ENVIRONMENT_KEY,requestTimeoutSeconds:5});
-      const regular=identity==='regular:demo'||await db.order.count({where:{sessionId:identity,shopId:'annapurna'}})>0;
+      const regular=await db.order.count({where:{sessionId:identity,shopId:'annapurna',status:{in:['CONFIRMED','READY','COLLECTED']}}})>0;
       const flags=await sdk.getIdentityFlags(`customer:${identity}`,{customer_type:regular?'regular':'new'});
       const limit=Number(flags.getFeatureValue('pickup_slot_order_limit'));
       if(!Number.isInteger(limit)||limit<1||limit>100) throw new Error('Invalid slot policy');

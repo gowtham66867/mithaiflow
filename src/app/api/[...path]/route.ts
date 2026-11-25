@@ -14,8 +14,8 @@ async function handle(req:NextRequest){try{
   const path=req.nextUrl.pathname.replace('/api/',''); const method=req.method;
   if(method!=='GET'&&!sameOrigin(req))return json({error:'Origin not allowed.'},403);
   if(path==='health')return json(await health());
-  if(path==='recover'&&method==='POST'){if(!recoveryAuth(req))return json({error:'Unauthorised.'},401);const b=z.object({incidentId:z.string().uuid(),workflowRef:z.string().min(1).max(200)}).parse(await req.json());return json(await recover(b.incidentId,b.workflowRef));}
-  if(path==='login'&&method==='POST'){rateLimit(req,'login',8);const b=z.object({password:z.string().max(200)}).parse(await req.json());if(!process.env.SHOP_PASSWORD||!equal(b.password,process.env.SHOP_PASSWORD))return json({error:'That shop password is incorrect.'},401);const res=json({ok:true});res.cookies.set('mithai-owner',sessionToken(),{httpOnly:true,sameSite:'strict',secure:process.env.APP_BASE_URL?.startsWith('https://'),path:'/',maxAge:28800});return res;}
+  if(path==='recover'&&method==='POST'){if(!recoveryAuth(req))return json({error:'Unauthorised.'},401);const b=z.object({incidentId:z.string().uuid(),workflowRef:z.string().min(1).max(200).default('NudgeBee callback — execution reference not supplied')}).parse(await req.json());return json(await recover(b.incidentId,b.workflowRef));}
+  if(path==='login'&&method==='POST'){rateLimit(req,'login',8);const b=z.object({password:z.string().max(200)}).parse(await req.json());if(!process.env.SHOP_PASSWORD||!equal(b.password,process.env.SHOP_PASSWORD))return json({error:'That shop password is incorrect.'},401);const res=json({ok:true});res.cookies.set('mithai-owner',sessionToken(),{httpOnly:true,sameSite:'strict',secure:req.headers.get('x-forwarded-proto')==='https'||new URL(req.url).protocol==='https:',path:'/',maxAge:28800});return res;}
   if(path==='logout'&&method==='POST'){const res=json({ok:true});res.cookies.delete('mithai-owner');return res;}
   if(path.startsWith('shop/')){
     if(!await isOwner())return json({error:'Sign in to the shop desk.'},401);

@@ -1,26 +1,26 @@
 {
-  "at": "2026-11-25T08:00:21.399Z",
+  "at": "2026-11-25T08:25:26.916Z",
   "scope": "Real provider requests; Sarvam audio input was synthetic. No customer data.",
   "checks": [
     {
       "service": "Sarvam",
       "check": "Text to speech",
       "status": "LIVE PASS",
-      "ms": 11133,
+      "ms": 6750,
       "detail": "Generated Hindi readback for a fictional 500 g / ₹600 order."
     },
     {
       "service": "Sarvam",
       "check": "Speech to text",
       "status": "LIVE PASS",
-      "ms": 9512,
-      "detail": "Synthetic-audio transcription returned 85 characters. Not a human speech accuracy test."
+      "ms": 937,
+      "detail": "Synthetic-audio transcription returned 86 characters. Not a human speech accuracy test."
     },
     {
       "service": "Sarvam",
       "check": "Structured order parsing",
       "status": "LIVE PASS",
-      "ms": 4051,
+      "ms": 244,
       "detail": "Correction correctly parsed as 500 g kaju katli, tomorrow 18:00."
     },
     {

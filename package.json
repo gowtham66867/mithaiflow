@@ -11,7 +11,8 @@
     "setup": "tsx scripts/bootstrap.ts",
     "db:seed": "tsx scripts/setup.ts",
     "test": "node scripts/run-tests.mjs",
-    "integrations:check": "tsx scripts/check-integrations.ts"
+    "integrations:check": "tsx scripts/check-integrations.ts",
+    "tunnel:check": "tsx scripts/check-tunnel.ts"
   },
   "keywords": [],
   "author": "",

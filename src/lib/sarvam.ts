@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { z } from 'zod';
 import { db } from './db';
 import { sampleMode } from './flags';
@@ -35,7 +36,21 @@ function fixtureIntent(text:string,nextDate:string){
   const questions=[];if(!productId)questions.push('Which sweet would you like?');if(!grams)questions.push('How many grams or kilograms?');if(!pickupDate)questions.push('Please choose your pickup date below.');if(!pickupTime)questions.push('Please choose a pickup time below.');
   return intentSchema.parse({productId,grams,pickupDate,pickupTime,questions});
 }
+type Speech={audio:string;text:string;source:string;cached:boolean};
+const speechCache=new Map<string,{until:number;result:Speech}>();
+const speechInFlight=new Map<string,Promise<Speech>>();
 export async function speakOrder(o:{productName:string;grams:number;totalPaise:number;pickupAt:string;language:string}){
-  const hi=o.language==='hi-IN';const text=hi?`${o.productName}, ${o.grams} ग्राम। कुल ${o.totalPaise/100} रुपये। पिकअप ${pickup(o.pickupAt)}। आपका ऑर्डर पक्का हो गया है।`:`Your order is confirmed: ${weight(o.grams)} ${o.productName}, ${rupees(o.totalPaise)}. Pickup ${pickup(o.pickupAt)}.`;
-  const r=await sarvam('/text-to-speech',JSON.stringify({text,language_code:o.language,model:process.env.SARVAM_TTS_MODEL||'bulbul:v3',speaker:process.env.SARVAM_TTS_SPEAKER||'shubh'}));return {audio:z.string().parse(r.audios[0]),text,source:'LIVE SARVAM'};
+  const hi=o.language==='hi-IN';
+  const product=hi?await db.product.findFirst({where:{name:o.productName,shopId:'annapurna'}}):null;
+  const hindiPickup=new Intl.DateTimeFormat('hi-IN',{timeZone:'Asia/Kolkata',day:'numeric',month:'long',hour:'numeric',minute:'2-digit'}).format(new Date(o.pickupAt));
+  const text=hi?`${product?.hindi||o.productName}, ${o.grams} ग्राम। कुल ${o.totalPaise/100} रुपये। पिकअप ${hindiPickup}। आपका ऑर्डर पक्का हो गया है।`:`Your order is confirmed: ${weight(o.grams)} ${o.productName}, ${rupees(o.totalPaise)}. Pickup ${pickup(o.pickupAt)}.`;
+  const payload={text,language_code:o.language,model:process.env.SARVAM_TTS_MODEL||'bulbul:v4-flash',speaker:process.env.SARVAM_TTS_SPEAKER||'shubh_enhi_ads'};
+  const key=createHash('sha256').update(JSON.stringify(payload)).digest('hex');
+  const cached=speechCache.get(key);
+  if(cached&&cached.until>Date.now())return {...cached.result,source:'CACHED SARVAM',cached:true};
+  const pending=speechInFlight.get(key);if(pending)return pending;
+  const work=(async()=>{const r=await sarvam('/text-to-speech',JSON.stringify(payload));const result={audio:z.string().parse(r.audios[0]),text,source:'LIVE SARVAM',cached:false};
+    if(speechCache.size>=64)speechCache.delete(speechCache.keys().next().value!);
+    speechCache.set(key,{until:Date.now()+15*60000,result});return result;})();
+  speechInFlight.set(key,work);try{return await work;}finally{speechInFlight.delete(key);} 
 }
