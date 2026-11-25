@@ -23,10 +23,12 @@ See [integrations.json](integrations.json) for the latest actual requests. Sarva
 
 The initial observed TTS request took 11,133 ms with the original model; one later flash-model request took 6,750 ms. The associated later STT and interpretation requests took 937 ms and 244 ms. These were separate observations with different timing conditions, not a controlled comparison or a latency guarantee.
 
-## Remaining external checks
+## Historical pending checks from the initial local run
 
-- Flagsmith live environment read and remote-toggle/segment behaviour need the environment key and actual configured features.
-- NudgeBee webhook delivery, in-app approval, recovery callback, and final health verification need the real workflow and public tunnel.
+The later [GCP deployment evidence](gcp-deployment.json) records the completed live connections and approved NudgeBee workflow. The [component verification](component-verification.json) records the subsequent test run. The initial pending items below are preserved as historical context.
+
+- Flagsmith live environment read and remote-toggle/segment behaviour needed the environment key and actual configured features.
+- NudgeBee webhook delivery, in-app approval, recovery callback, and final health verification needed the real workflow and public tunnel.
 - The current report explicitly labels unconfigured services. A configured webhook alone must not be reported as a completed approval workflow.
 
 Private sponsor-dashboard captures are outside the repository. `.env`, root PNGs, local databases, and `.next` are ignored by Git.

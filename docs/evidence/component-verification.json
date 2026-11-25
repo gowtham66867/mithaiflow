@@ -1,0 +1,199 @@
+{
+  "verifiedAt": "2026-11-25T11:42:53.897882+00:00",
+  "scope": "Post-submission component verification using fictional demo data. Core tests use an isolated database. Live sample order was cancelled and released.",
+  "automatedTests": {
+    "passed": 15,
+    "failed": 0,
+    "stockRaceRounds": 12
+  },
+  "liveHttp": {
+    "at": "2026-11-25T11:36:54Z",
+    "checks": [
+      {
+        "component": "Health",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "component": "Catalogue",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "component": "Flagsmith live policy",
+        "status": "PASS",
+        "detail": "{'accepting': True, 'voice': True, 'slotLimit': 8, 'source': 'LIVE'}"
+      },
+      {
+        "component": "Customer cookie",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "component": "Shop protection",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "component": "Recovery protection",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "component": "Cross origin protection",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "component": "Bad login",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "component": "Owner login",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "component": "Shop dashboard",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "component": "Historical NudgeBee approval",
+        "status": "PASS",
+        "detail": "Recorded real execution, no new incident triggered"
+      },
+      {
+        "component": "Input validation",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "component": "Server price",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "component": "Quote does not reserve",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "component": "Foreign session rejection",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "component": "Confirmation",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "component": "Confirmation retry",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "component": "Reused key mismatch",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "component": "Receipt privacy",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "component": "Hindi spoken receipt",
+        "status": "PASS",
+        "detail": "Audio generated; product name is Hindi"
+      },
+      {
+        "component": "Readback cache",
+        "status": "PASS",
+        "detail": "0.32 s"
+      },
+      {
+        "component": "Cancellation",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "component": "Cancellation retry",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "component": "Cancellation stock release",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "component": "Cancelled tracking",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "component": "Live isolated stock race",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "component": "Live setting protection",
+        "status": "PASS",
+        "detail": ""
+      },
+      {
+        "component": "Owner logout",
+        "status": "PASS",
+        "detail": ""
+      }
+    ]
+  },
+  "sarvam": {
+    "at": "2026-11-25T11:40:07.062Z",
+    "checks": [
+      {
+        "component": "Sarvam explicit correction",
+        "status": "PASS",
+        "ms": 1148,
+        "detail": "500 g, kaju katli, tomorrow 18:00"
+      },
+      {
+        "component": "Sarvam Hindi order",
+        "status": "PASS",
+        "ms": 354,
+        "detail": "Hindi request extracted correctly"
+      },
+      {
+        "component": "Sarvam missing quantity clarification",
+        "status": "PASS",
+        "ms": 404,
+        "detail": "Quantity remains null and clarification is requested"
+      },
+      {
+        "component": "Sarvam bounded output under instruction injection",
+        "status": "PASS",
+        "ms": 335,
+        "detail": "No product invented, output remains a structured request"
+      },
+      {
+        "component": "Sarvam Hindi speech roundtrip",
+        "status": "PASS",
+        "ms": 3457,
+        "detail": "Hindi name verified; synthetic speech transcribed to 96 characters. Human microphone accuracy unmeasured."
+      }
+    ]
+  },
+  "browser": {
+    "desktopShop": "PASS; healthy, cancelled test receipt, Flagsmith LIVE",
+    "mobileStorefront": "PASS; 390px viewport and document width both 390px"
+  },
+  "limits": [
+    "Microphone capture with a human speaker and noisy venue accuracy were not measured.",
+    "The complete NudgeBee cloud approval execution is the earlier live v4 run. Recovery was retested in an isolated database; no new live incident was triggered.",
+    "Flagsmith cohort logic used a stubbed SDK test; the deployed API separately returned a live Flagsmith policy. A two-browser dashboard override was not rerun."
+  ],
+  "demoExpiresAt": "2026-11-25T18:29:59Z"
+}

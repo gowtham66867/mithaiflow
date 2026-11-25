@@ -6,7 +6,7 @@ This deployment runs the production Next.js server on one Debian 12 `e2-micro` V
 
 - Storefront: <https://mithaiflow.35.208.30.98.sslip.io>
 - Shop desk: <https://mithaiflow.35.208.30.98.sslip.io/shop>
-- Automatic removal: approximately **6:20 PM IST on 25 November 2026**. The four-hour lifecycle is measured from the VM's actual start time.
+- Automatic removal: **11:59:59 PM IST on 25 November 2026**. The user requested an extension through the end of the day.
 - The isolated new project's billing association was denied (`billing.resourceAssociations.create`), so the VM is deployed in an existing Texmed project with billing already enabled. It uses its own VPC, subnet and tagged firewall rules. Existing VMs were not changed.
 - HTTPS health, live Flagsmith policy, fictional order confirmation, server pricing, confirmation replay, one stock reservation, protected shop access, unauthenticated recovery rejection, and receipt persistence across an app restart all passed.
 - NudgeBee's **MithaiFlow Application Demo** account and **MithaiFlow demo proxy** are connected; its UI reported **Agent connected**. Automatic network discovery is disabled. The GCP JSON-key policy was not weakened.
@@ -14,10 +14,10 @@ This deployment runs the production Next.js server on one Debian 12 `e2-micro` V
 
 ## Demo lifetime and cost controls
 
-- A four-hour maximum runtime and `instanceTerminationAction=DELETE` are enforced by Compute Engine. The auto-delete boot disk and its sample orders expire with the VM. Export any needed demo evidence before expiry.
-- One 20 GB standard persistent disk, Standard network tier, and an ephemeral IPv4 address. No Cloud SQL, load balancer, Cloud NAT, paid DNS zone, reserved IP, or second VM.
+- An absolute termination time of `2026-11-25T18:29:59Z` and `instanceTerminationAction=DELETE` are enforced by Compute Engine. The auto-delete boot disk and its sample orders expire with the VM. Export any needed demo evidence before expiry.
+- One 20 GB standard persistent disk, Standard network tier, and an ephemeral IPv4 address. No Cloud SQL, load balancer, Cloud NAT, paid DNS zone, or second VM. The existing IP was temporarily reserved to preserve the submitted URL during the required stop/start, then the reservation was released while the IP remained in use.
 - The approved demo budget is US$1. Free Tier eligibility is account-wide and cannot be assumed. External IPv4 and network traffic can be billed. A billing budget is not a hard spending cap.
-- The installer limits total internet egress, including sponsor API uploads and web responses, to 512 MiB using an outbound firewall quota. Loopback, metadata and management SSH are exempt. The quota is in memory and resets if its rules are recreated; do not restart or recreate the deployment without reviewing the remaining budget.
+- The installer limits total internet egress, including sponsor API uploads and web responses, to 512 MiB using an outbound firewall quota. Loopback, metadata and management SSH are exempt. After the end-of-day extension restart, the remaining quota was conservatively set to 500 MiB. The quota is in memory and resets if its rules are recreated; do not restart or recreate the deployment without reviewing the remaining budget.
 - VM removal stops its compute/IP/disk charges. The empty VPC, subnet and firewall rules are not billable resources, but can be removed after the demo.
 
 ## Access and secrets
