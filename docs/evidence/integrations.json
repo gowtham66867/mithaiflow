@@ -1,33 +1,34 @@
 {
-  "at": "2026-11-25T08:25:26.916Z",
+  "at": "2026-11-25T08:40:13.359Z",
   "scope": "Real provider requests; Sarvam audio input was synthetic. No customer data.",
   "checks": [
     {
       "service": "Sarvam",
       "check": "Text to speech",
       "status": "LIVE PASS",
-      "ms": 6750,
+      "ms": 12818,
       "detail": "Generated Hindi readback for a fictional 500 g / ₹600 order."
     },
     {
       "service": "Sarvam",
       "check": "Speech to text",
       "status": "LIVE PASS",
-      "ms": 937,
-      "detail": "Synthetic-audio transcription returned 86 characters. Not a human speech accuracy test."
+      "ms": 3704,
+      "detail": "Synthetic-audio transcription returned 100 characters. Not a human speech accuracy test."
     },
     {
       "service": "Sarvam",
       "check": "Structured order parsing",
       "status": "LIVE PASS",
-      "ms": 244,
+      "ms": 1055,
       "detail": "Correction correctly parsed as 500 g kaju katli, tomorrow 18:00."
     },
     {
       "service": "Flagsmith",
-      "check": "Live read",
-      "status": "NOT CONFIGURED",
-      "detail": "Set FLAGSMITH_ENVIRONMENT_KEY."
+      "check": "Identity flags and remote configuration",
+      "status": "LIVE PASS",
+      "ms": 1399,
+      "detail": "Live read: accepting=true, slot limit=8, voice=true. A remote toggle demonstration is still required."
     },
     {
       "service": "NudgeBee",

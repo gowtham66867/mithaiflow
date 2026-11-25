@@ -4,6 +4,14 @@ This is a controlled application-level checkout failure. It does not crash Kuber
 
 ## Prerequisites
 
+### Texmed GCP preparation (25 November 2026)
+
+An isolated project, `mithaiflow-demo-20261125`, was created using the Texmed login. Billing is disabled and no compute, database, billing export, or paid resources were provisioned. The service account `mithaiflow-nudgebee` has only `roles/viewer` on this empty project; it has no grants on the existing Texmed projects.
+
+Connection is **not complete**. GCP enforces `iam.managed.disableServiceAccountKeyCreation`; the approved attempt to override it only on this demo project was denied because the login lacks `orgpolicy.policies.create`. No service-account private key was issued or sent to NudgeBee. An authorised Texmed policy administrator must apply a project-only exception before the JSON-key onboarding can continue. Do not disable the protection across the organisation. The NudgeBee form is prepared as **MithaiFlow Demo Texmed**, **Non-production**.
+
+Project creation and account onboarding do not deploy MithaiFlow. A verified public HTTPS endpoint and the approval workflow below are still required for a live recovery demonstration.
+
 1. A working NudgeBee workspace with an account connected. Its setup screen requires a cluster/cloud/self-hosted account before integrations unlock. Use a non-production demo account. Do not connect a production cloud account for this exercise.
 2. A running MithaiFlow instance: `npm run dev`.
 3. A public HTTPS tunnel to **http://127.0.0.1:3000**. Put its origin, without a trailing slash, in private `.env` as `APP_BASE_URL`. Restart the app after environment changes if it does not reload automatically.
